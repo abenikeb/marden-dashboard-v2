@@ -282,13 +282,16 @@ export async function fetchFilteredCustomers(
   noStore();
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
-    const response = await axios.get('http://196.189.124.134:38443/api/users', {
-      params: {
-        query: query,
-        offset,
-        ITEMS_PER_PAGE,
+    const response = await axios.get(
+      'http://196.189.124.134:38443/api/users/get-user-by-Offset',
+      {
+        params: {
+          query: query,
+          offset,
+          ITEMS_PER_PAGE,
+        },
       },
-    });
+    );
     const users = response.data.users;
     console.log({ users });
 
@@ -311,6 +314,21 @@ export async function fetchFilteredCustomers(
 }
 
 export async function fetchPeoductPostPages(query: string) {
+  noStore();
+  try {
+    const response = await axios.get(
+      `http://196.189.124.134:38443/api/users/search?query=${query}`,
+    );
+    const postFieldCount = response.data.count;
+    const totalPages = Math.ceil(Number(postFieldCount) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of invoices.');
+  }
+}
+
+export async function fetchCustomerPages(query: string) {
   noStore();
   try {
     const response = await axios.get(

@@ -7,16 +7,11 @@ import {
 } from '@/app/lib/definitions';
 import { fetchFilteredCustomers } from '@/app/lib/data';
 
-export default async function CustomersTable({
-  query,
-  currentPage,
+export default function CustomersTable({
+  customers,
 }: {
-  // customers: FormattedCustomersTable[];
-  query: string;
-  currentPage: number;
+  customers: FormattedCustomersTable[];
 }) {
-  const customers = await fetchFilteredCustomers(query, currentPage);
-
   return (
     <div className="w-full">
       <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
